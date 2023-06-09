@@ -1,5 +1,6 @@
 import SwiftUI
 import shared
+import Combine
 
 struct ContentView: View {
     @State private var username: String = ""
@@ -16,7 +17,10 @@ struct ContentView: View {
                 viewModel.loginDataChanged(username: username, password: password)
             })
             Button("Login") {
-                viewModel.login(username: username, password: password)
+                Task{
+                    await viewModel.login(username: username, password: password)
+
+                }
             }.disabled(!viewModel.formState.isDataValid || (username.isEmpty && password.isEmpty))
         }
         .padding(.all)
@@ -92,8 +96,8 @@ extension ContentView {
             self.loginValidator = loginValidator
         }
 
-        func login(username: String, password: String) {
-            if let result = loginRepository.login(username: username, password: password) as? ResultSuccess  {
+        func login(username: String, password: String) async {
+            if let result = try? await loginRepository.login(username: username, password: password) as? ResultSuccess  {
                 print("Successful login. Welcome, \(result.data.displayName)")
             } else {
                 print("Error while logging in")
