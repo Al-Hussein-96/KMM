@@ -50,6 +50,10 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.2")
 
 
+    //Logger
+    implementation(libs.napier)
+
+
     //DI
     implementation(libs.koin.core)
     implementation(libs.koin.android)

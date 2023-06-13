@@ -1,6 +1,8 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    kotlin("plugin.serialization") version "1.8.22"
+
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
@@ -38,9 +40,18 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-auth:$ktorVersion")
+                implementation("io.ktor:ktor-client-json:$ktorVersion")
 
                 // Serialization
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.5.1")
+
+
+                api(libs.androidx.datastore.preferences.core)
+                api(libs.androidx.datastore.core.okio)
+
 
 
                 //Coroutines
@@ -55,6 +66,12 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+
+                api(libs.androidx.datastore.preferences.core)
+                api(libs.androidx.datastore.core.okio)
+
+                api(libs.koin.core)
+
             }
         }
         val iosMain by getting {

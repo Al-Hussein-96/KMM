@@ -8,22 +8,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val repository: LoginRepository): ViewModel() {
-    private val _state = MutableStateFlow("Loading")
-    val state: StateFlow<String> = _state
+class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
 
 
-    init {
+    private val _state = MutableStateFlow(false)
+    val state: StateFlow<Boolean> = _state
 
-        viewModelScope.launch {
-            val result = repository.login("Mohammad","12345")
+    fun login(username: String, password: String) = viewModelScope.launch {
+        val result = repository.login(username, password)
 
-            if(result is Result.Success)
-                _state.value = "Done"
-            else
-                _state.value = "Error"
-
-        }
+        _state.value = result is Result.Success
     }
-
 }
